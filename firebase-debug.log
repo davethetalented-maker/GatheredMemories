@@ -1,0 +1,50 @@
+[debug] [2026-04-10T14:41:05.176Z] ----------------------------------------------------------------------
+[debug] [2026-04-10T14:41:05.179Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\DAVEDAGNIPA\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js projects:create palanca-letters --display-name Palanca Letters
+[debug] [2026-04-10T14:41:05.180Z] CLI Version:   15.14.0
+[debug] [2026-04-10T14:41:05.180Z] Platform:      win32
+[debug] [2026-04-10T14:41:05.180Z] Node Version:  v24.14.1
+[debug] [2026-04-10T14:41:05.180Z] Time:          Fri Apr 10 2026 22:41:05 GMT+0800 (China Standard Time)
+[debug] [2026-04-10T14:41:05.180Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-04-10T14:41:05.196Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-04-10T14:41:05.196Z] > authorizing via signed-in user (davemichaelvillasan@gmail.com)
+[debug] [2026-04-10T14:41:05.201Z] Checked if tokens are valid: true, expires at: 1775835648267
+[debug] [2026-04-10T14:41:05.201Z] Checked if tokens are valid: true, expires at: 1775835648267
+[debug] [2026-04-10T14:41:05.202Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2026-04-10T14:41:05.202Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"palanca-letters","name":"Palanca Letters"}
+[debug] [2026-04-10T14:41:06.688Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 409
+[debug] [2026-04-10T14:41:06.689Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"error":{"code":409,"message":"Requested entity already exists","status":"ALREADY_EXISTS"}}
+[debug] [2026-04-10T14:41:06.692Z] FirebaseError: Request to https://cloudresourcemanager.googleapis.com/v1/projects had HTTP Error: 409, Requested entity already exists
+    at responseToError (C:\Users\DAVEDAGNIPA\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:53:12)
+    at RetryOperation._fn (C:\Users\DAVEDAGNIPA\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:333:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[error] 
+[error] Error: Failed to create project because there is already a project with ID palanca-letters. Please try again with a unique project ID.
+[debug] [2026-04-10T14:41:16.788Z] ----------------------------------------------------------------------
+[debug] [2026-04-10T14:41:16.792Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\DAVEDAGNIPA\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js projects:create palanca-letters-app --display-name Palanca Letters
+[debug] [2026-04-10T14:41:16.793Z] CLI Version:   15.14.0
+[debug] [2026-04-10T14:41:16.793Z] Platform:      win32
+[debug] [2026-04-10T14:41:16.793Z] Node Version:  v24.14.1
+[debug] [2026-04-10T14:41:16.793Z] Time:          Fri Apr 10 2026 22:41:16 GMT+0800 (China Standard Time)
+[debug] [2026-04-10T14:41:16.793Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-04-10T14:41:16.803Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-04-10T14:41:16.803Z] > authorizing via signed-in user (davemichaelvillasan@gmail.com)
+[debug] [2026-04-10T14:41:16.809Z] Checked if tokens are valid: true, expires at: 1775835648267
+[debug] [2026-04-10T14:41:16.809Z] Checked if tokens are valid: true, expires at: 1775835648267
+[debug] [2026-04-10T14:41:16.810Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2026-04-10T14:41:16.810Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"palanca-letters-app","name":"Palanca Letters"}
+[debug] [2026-04-10T14:41:18.586Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 200
+[debug] [2026-04-10T14:41:18.586Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"name":"operations/create_project.global.8752016434914116550"}
+[debug] [2026-04-10T14:41:18.587Z] Checked if tokens are valid: true, expires at: 1775835648267
+[debug] [2026-04-10T14:41:18.587Z] Checked if tokens are valid: true, expires at: 1775835648267
+[debug] [2026-04-10T14:41:18.587Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8752016434914116550 [none]
+[debug] [2026-04-10T14:41:19.768Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8752016434914116550 200
+[debug] [2026-04-10T14:41:19.768Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8752016434914116550 {"name":"operations/create_project.global.8752016434914116550","metadata":{"@type":"type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus","ready":true},"done":true,"error":{"code":9,"message":"Callers must accept Terms of Service","details":[{"@type":"type.googleapis.com/google.rpc.PreconditionFailure","violations":[{"type":"TOS","subject":"cloud","description":"Callers must accept Terms of Service"}]}]}}
+[debug] [2026-04-10T14:41:19.770Z] FirebaseError: Callers must accept Terms of Service
+    at OperationPoller.poll (C:\Users\DAVEDAGNIPA\AppData\Roaming\npm\node_modules\firebase-tools\lib\operation-poller.js:25:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async createCloudProject (C:\Users\DAVEDAGNIPA\AppData\Roaming\npm\node_modules\firebase-tools\lib\management\projects.js:237:29)
+    at async createFirebaseProjectAndLog (C:\Users\DAVEDAGNIPA\AppData\Roaming\npm\node_modules\firebase-tools\lib\management\projects.js:102:9)
+[error] 
+[error] Error: Failed to create project. See firebase-debug.log for more info.

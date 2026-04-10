@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gathered Memories — Private Palanca Letters</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Plus+Jakarta+Sans:wght@200..800&family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: "#4d6144",
+        "primary-container": "#dbf2cc",
+        "on-primary": "#e2fad3",
+        "on-primary-container": "#485c3f",
+        secondary: "#78505a",
+        "secondary-container": "#f8c4cf",
+        "on-secondary-container": "#623d46",
+        tertiary: "#6f5836",
+        "tertiary-container": "#fbdbb0",
+        "on-tertiary-container": "#624c2c",
+        surface: "#f8f6f2",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#f2f1ec",
+        "surface-container": "#e9e8e4",
+        "surface-container-high": "#e4e2de",
+        "surface-container-highest": "#deddd8",
+        "on-surface": "#2e2f2d",
+        "on-surface-variant": "#5b5c59",
+        "outline-variant": "#aeadaa",
+        outline: "#777774",
+        background: "#f8f6f2",
+        "on-background": "#2e2f2d",
+        error: "#b02500",
+        "error-container": "#f95630",
+      },
+      fontFamily: {
+        headline: ["Newsreader", "serif"],
+        body: ["Plus Jakarta Sans", "sans-serif"],
+        script: ["Dancing Script", "cursive"],
+      },
+    }
+  }
+}
+</script>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8f6f2; color: #2e2f2d; min-height: 100dvh; overflow-x: hidden; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+  .filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .page { display: none; opacity: 0; transition: opacity 0.5s ease; }
+  .page.active { display: block; opacity: 1; }
+  .page.fade-in { animation: fadeInPage 0.6s ease forwards; }
+  @keyframes fadeInPage { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .botanical-bg {
+    background-color: #f8f6f2;
+    background-image:
+      radial-gradient(circle at 15% 15%, rgba(77,97,68,0.06) 0%, transparent 35%),
+      radial-gradient(circle at 85% 85%, rgba(120,80,90,0.06) 0%, transparent 35%),
+      radial-gradient(circle at 50% 50%, rgba(111,88,54,0.03) 0%, transparent 60%);
+  }
+  .letter-card { transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s ease; cursor: pointer; }
+  .letter-card:hover { transform: translateY(-6px) rotate(0.5deg); box-shadow: 0 20px 40px rgba(77,97,68,0.12); }
+  .envelope-wrap { perspective: 1200px; }
+  .envelope { transition: transform 0.8s cubic-bezier(0.4,0,0.2,1); transform-style: preserve-3d; cursor: pointer; }
+  .envelope:hover { transform: scale(1.03); }
+  .envelope-flap { position: absolute; top: 0; left: 0; right: 0; height: 50%; background: #dbf2cc; clip-path: polygon(0 0, 100% 0, 50% 100%); border-radius: 4px 4px 0 0; transform-origin: top center; transition: transform 0.8s cubic-bezier(0.4,0,0.2,1); z-index: 3; }
+  .envelope.open .envelope-flap { transform: rotateX(-180deg); }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .cursor { display: inline-block; width: 2px; height: 1.1em; background: #4d6144; margin-left: 2px; vertical-align: bottom; animation: blink 1s infinite; }
+  .polaroid { background: #fff; padding: 10px 10px 36px; box-shadow: 0 8px 24px rgba(46,47,45,0.07); border-radius: 2px; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .polaroid:hover { transform: rotate(0deg) !important; box-shadow: 0 16px 40px rgba(46,47,45,0.14); }
+  .washi { display: inline-block; padding: 2px 16px; background: rgba(248,196,207,0.55); backdrop-filter: blur(4px); clip-path: polygon(3% 0%,97% 0%,100% 50%,97% 100%,3% 100%,0% 50%); }
+  .glass-player { background: rgba(248,246,242,0.85); backdrop-filter: blur(20px); }
+  @keyframes float { 0%,100%{transform:translateY(0) rotate(var(--r,0deg))} 50%{transform:translateY(-8px) rotate(var(--r,0deg))} }
+  .floating { animation: float 4s ease-in-out infinite; }
+  @keyframes heartPop { 0%{transform:scale(0) translateY(0);opacity:1} 100%{transform:scale(1.2) translateY(-80px);opacity:0} }
+  @keyframes pulse-soft { 0%,100%{opacity:0.4} 50%{opacity:1} }
+  .pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
+  @keyframes spin-slow { to{transform:rotate(360deg)} }
+  .spin-slow { animation: spin-slow 8s linear infinite; }
+  @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+  .shimmer { background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.4) 50%, transparent 75%); background-size: 200% 100%; animation: shimmer 2.5s infinite; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .slide-up { animation: slideUp 0.7s cubic-bezier(0.4,0,0.2,1) forwards; }
+  .delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .delay-2 { animation-delay: 0.25s; opacity: 0; }
+  .delay-3 { animation-delay: 0.4s; opacity: 0; }
+  .delay-4 { animation-delay: 0.55s; opacity: 0; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(77,97,68,0.2); border-radius: 999px; }
+  .heart-particle { position: fixed; pointer-events: none; z-index: 9999; font-size: 1.2rem; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+  .shake { animation: shake 0.5s ease; }
+</style>
+</head>
+<body class="botanical-bg">
+<div class="fixed top-16 left-6 opacity-10 pointer-events-none floating" style="--r:-12deg">
+  <span class="material-symbols-outlined text-5xl" style="color:#4d6144">local_florist</span>
+</div>
+<div class="fixed top-32 right-8 opacity-10 pointer-events-none floating" style="--r:20deg;animation-delay:1.5s">
+  <span class="material-symbols-outlined text-7xl" style="color:#78505a">eco</span>
+</div>
+<div class="fixed bottom-32 left-8 opacity-8 pointer-events-none floating" style="--r:-8deg;animation-delay:2.5s">
+  <span class="material-symbols-outlined text-4xl" style="color:#6f5836">filter_vintage</span>
+</div>
+<div class="fixed bottom-20 right-12 opacity-8 pointer-events-none floating" style="--r:15deg;animation-delay:0.8s">
+  <span class="material-symbols-outlined text-5xl" style="color:#4d6144">yard</span>
+</div>
+<div id="page-home" class="page active fade-in">
+  <header class="sticky top-0 z-50 glass-player px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined filled" style="color:#4d6144">local_florist</span>
+      <h1 class="font-headline italic text-xl" style="color:#4d6144">Gathered Memories</h1>
+    </div>
+    <a href="admin.html" class="flex items-center gap-1.5 text-xs font-body uppercase tracking-widest px-3 py-1.5 rounded-full" style="color:#5b5c59;background:rgba(174,173,170,0.15)">
+      <span class="material-symbols-outlined text-sm">admin_panel_settings</span> Admin
+    </a>
+  </header>
+  <main class="max-w-5xl mx-auto px-6 pt-14 pb-32">
+    <div class="text-center mb-16 slide-up">
+      <div class="washi text-xs font-body uppercase tracking-widest mb-5" style="color:#623d46">A collection of letters</div>
+      <h2 class="font-headline italic text-5xl md:text-7xl mb-4" style="color:#4d6144;line-height:1.1">A letter from<br/>someone who cares.</h2>
+      <p class="font-body text-base max-w-sm mx-auto leading-relaxed" style="color:#5b5c59">Each letter is private and encrypted. Choose your name below to unlock what’s waiting for you.</p>
+    </div>
+    <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+    <div id="empty-state" class="hidden text-center py-24">
+      <span class="material-symbols-outlined text-6xl mb-4 block" style="color:#aeadaa">mail_outline</span>
+      <p class="font-headline italic text-2xl mb-2" style="color:#777774">No letters are available yet</p>
+      <p class="font-body text-sm mb-6" style="color:#aeadaa">Ask the admin to add a letter in the dashboard.</p>
+    </div>
+  </main>
+</div>
+<div id="page-password" class="page">
+  <div class="min-h-dvh flex flex-col items-center justify-center p-6 relative">
+    <button onclick="showPage('page-home')" class="absolute top-6 left-6 flex items-center gap-1 text-sm font-body" style="color:#5b5c59">
+      <span class="material-symbols-outlined text-sm">arrow_back</span> Back
+    </button>
+    <main class="w-full max-w-md z-10">
+      <div class="slide-up" style="background:rgba(255,255,255,0.45);backdrop-filter:blur(24px);border-radius:2.5rem;padding:3rem 2.5rem;border:1px solid rgba(255,255,255,0.55);box-shadow:0 24px 60px rgba(77,97,68,0.1)">
+        <div class="flex flex-col items-center text-center mb-8">
+          <div class="relative w-20 h-20 rounded-full flex items-center justify-center mb-6" style="background:#dbf2cc">
+            <span class="material-symbols-outlined filled text-4xl" style="color:#4d6144">mail</span>
+            <div class="absolute top-0 right-0">
+              <span class="material-symbols-outlined filled text-xl" style="color:#78505a">favorite</span>
+            </div>
+          </div>
+          <h1 class="font-headline italic text-3xl mb-2" style="color:#2e2f2d">This letter is just for you 💌</h1>
+          <p id="pw-recipient-hint" class="font-body text-base" style="color:#5b5c59">Enter your password to unlock your message</p>
+        </div>
+        <div class="space-y-6">
+          <div class="relative group">
+            <input id="pw-input" type="password" placeholder="••••••••" autocomplete="off"
+              class="w-full bg-transparent text-center text-2xl tracking-widest py-4 px-2 outline-none transition-colors duration-500 placeholder-opacity-40"
+              style="border:none;border-bottom:2px solid rgba(174,173,170,0.3);font-family:'Plus Jakarta Sans',sans-serif;color:#2e2f2d"
+              onkeydown="if(event.key==='Enter') attemptUnlock()"/>
+            <div id="pw-underline" class="absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 transition-transform duration-700" style="background:#4d6144;transform-origin:left;transition:transform 0.5s ease"></div>
+          </div>
+          <div id="pw-error" class="hidden flex items-center justify-center gap-2 text-sm font-body" style="color:#78505a">
+            <span class="material-symbols-outlined text-sm">error_outline</span>
+            <span>That password isn't quite right, try again 💭</span>
+          </div>
+          <button onclick="attemptUnlock()" class="w-full font-body font-bold py-4 px-8 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 hover:opacity-90 active:scale-95" style="background:#4d6144;color:#e2fad3;box-shadow:0 8px 20px rgba(77,97,68,0.22)">
+            <span class="material-symbols-outlined filled">key</span>
+            Unlock Letter
+          </button>
+        </div>
+        <p class="text-center text-xs font-body uppercase tracking-widest mt-8" style="color:rgba(91,92,89,0.55)">
+          <span class="material-symbols-outlined text-xs">encrypted</span>
+          Private &amp; Protected
+        </p>
+      </div>
+    </main>
+  </div>
+</div>
+<div id="page-letter" class="page">
+  <div id="letter-loading" class="min-h-dvh flex flex-col items-center justify-center gap-6">
+    <div class="spin-slow opacity-40">
+      <span class="material-symbols-outlined text-6xl" style="color:#4d6144">local_florist</span>
+    </div>
+    <p class="font-headline italic text-2xl pulse-soft" style="color:#4d6144">Preparing your letter…</p>
+    <div class="flex gap-2">
+      <div class="w-2 h-2 rounded-full pulse-soft" style="background:#dbf2cc;animation-delay:0s"></div>
+      <div class="w-2 h-2 rounded-full pulse-soft" style="background:#dbf2cc;animation-delay:0.3s"></div>
+      <div class="w-2 h-2 rounded-full pulse-soft" style="background:#dbf2cc;animation-delay:0.6s"></div>
+    </div>
+  </div>
+  <div id="letter-envelope" class="hidden min-h-dvh flex flex-col items-center justify-center gap-10 px-6">
+    <div class="text-center slide-up">
+      <p class="washi text-xs uppercase tracking-widest mb-4" style="color:#623d46">A message awaits you</p>
+      <h2 id="envelope-for-name" class="font-headline italic text-4xl md:text-5xl mb-2" style="color:#4d6144">For you 💗</h2>
+      <p class="font-body text-sm" style="color:#5b5c59">Tap the envelope to open your letter</p>
+    </div>
+    <div class="envelope-wrap slide-up delay-2">
+      <div id="envelope" class="envelope relative" style="width:280px;height:200px" onclick="openEnvelope()">
+        <div class="absolute inset-0 rounded-xl overflow-hidden" style="background:#dbf2cc;box-shadow:0 20px 50px rgba(77,97,68,0.2)">
+          <div class="absolute bottom-0 left-0 right-0 h-1/2 flex items-end justify-center pb-4">
+            <span class="material-symbols-outlined filled text-3xl" style="color:rgba(77,97,68,0.25)">favorite</span>
+          </div>
+          <div class="absolute bottom-0 left-0" style="width:0;height:0;border-style:solid;border-width:0 0 100px 140px;border-color:transparent transparent rgba(77,97,68,0.12) transparent"></div>
+          <div class="absolute bottom-0 right-0" style="width:0;height:0;border-style:solid;border-width:0 140px 100px 0;border-color:transparent rgba(77,97,68,0.12) transparent transparent"></div>
+        </div>
+        <div class="envelope-flap"></div>
+        <div class="absolute inset-0 rounded-xl shimmer pointer-events-none"></div>
+        <div id="wax-seal" class="absolute bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 z-10" style="background:#78505a;box-shadow:0 4px 12px rgba(120,80,90,0.35)">
+          <span class="material-symbols-outlined filled text-xl" style="color:#fff">favorite</span>
+        </div>
+      </div>
+    </div>
+    <p class="font-body text-xs animate-bounce mt-4" style="color:#aeadaa">
+      <span class="material-symbols-outlined text-sm">touch_app</span> Click to open
+    </p>
+  </div>
+  <div id="letter-content" class="hidden pb-40">
+    <header class="sticky top-0 z-50 glass-player px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined filled" style="color:#4d6144">local_florist</span>
+        <h1 class="font-headline italic text-xl" style="color:#4d6144">Gathered Memories</h1>
+      </div>
+      <button onclick="replayLetter()" class="flex items-center gap-1.5 text-xs font-body px-3 py-1.5 rounded-full" style="color:#5b5c59;background:rgba(174,173,170,0.15)">
+        <span class="material-symbols-outlined text-sm">replay</span> Replay
+      </button>
+    </header>
+    <main class="max-w-4xl mx-auto px-4 md:px-6 pt-12">
+      <section class="mb-14 text-center md:text-left slide-up">
+        <div id="letter-date" class="washi text-xs font-body uppercase tracking-widest mb-5 inline-block rotate-1" style="color:#623d46">With all my heart</div>
+        <h2 id="letter-title" class="font-headline italic text-5xl md:text-7xl mb-3" style="color:#4d6144;line-height:1.05">For you 💗</h2>
+        <p class="font-body text-sm italic" style="color:#5b5c59">Written in a quiet moment, just for you</p>
+      </section>
+      <div class="relative grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        <article class="md:col-span-8 rounded-2xl relative slide-up delay-1" style="background:#f2f1ec;padding:2.5rem;box-shadow:0 8px 30px rgba(77,97,68,0.07)">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-7 washi" style="background:rgba(219,242,204,0.6)"></div>
+          <div id="letter-text" class="font-headline text-lg leading-relaxed" style="color:rgba(46,47,45,0.88);min-height:200px"></div>
+          <span id="type-cursor" class="cursor"></span>
+        </article>
+        <aside id="polaroid-gallery" class="md:col-span-4 flex flex-col gap-10 pt-6"></aside>
+      </div>
+      <div id="image-grid-extra" class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 slide-up delay-3"></div>
+    </main>
+    <div class="fixed bottom-0 left-0 w-full z-50 glass-player px-5 py-4" style="border-top:1px solid rgba(174,173,170,0.12)">
+      <div class="max-w-4xl mx-auto flex items-center justify-between gap-4 flex-wrap">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:#dbf2cc">
+            <span class="material-symbols-outlined filled" style="color:#4d6144;font-size:1.3rem">music_note</span>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-widest font-bold" style="color:#4d6144">Now Playing</p>
+            <p id="music-title" class="font-headline italic text-base" style="color:#2e2f2d">Your song</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-5">
+          <button onclick="toggleMusic()" id="music-btn" class="w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform active:scale-95" style="background:#4d6144;color:#e2fad3">
+            <span id="music-icon" class="material-symbols-outlined filled text-2xl">play_arrow</span>
+          </button>
+          <div class="text-xs font-body" style="color:#5b5c59">
+            <span id="music-status">Paused</span>
+          </div>
+        </div>
+        <div class="hidden md:flex items-center gap-3 flex-1 max-w-xs">
+          <span class="material-symbols-outlined text-sm" style="color:#aeadaa">volume_up</span>
+          <input type="range" min="0" max="1" step="0.05" value="0.6" oninput="setVolume(this.value)" class="flex-1 accent-green-700" style="height:4px"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <audio id="bg-music" loop></audio>
+</div>
+<div id="hearts-container" class="pointer-events-none fixed inset-0 z-50 overflow-hidden"></div>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+  import { getFirestore, collection, doc, getDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+  import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqX76CnWtppsLalmsBTUDOZtzkFCROwJw",
+    authDomain: "palanca-letters-ccb0d.firebaseapp.com",
+    projectId: "palanca-letters-ccb0d",
+    storageBucket: "palanca-letters-ccb0d.firebasestorage.app",
+    messagingSenderId: "568004585918",
+    appId: "1:568004585918:web:20c25889a9d65057dcb1ef",
+    measurementId: "G-RTTQ2YNLTN"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  let letters = [];
+  let currentLetterId = null;
+  let selectedLetterName = '';
+  let typewriterInterval = null;
+  let currentLetter = null;
+
+  async function signInAnonymous() {
+    try {
+      await signInAnonymously(auth);
+    } catch (error) {
+      console.warn('Anonymous Firebase auth failed. The app may still work in emulator mode.', error);
+    }
+  }
+
+  async function loadLetterIndex() {
+    const lettersRef = collection(db, 'letters');
+    const snapshot = await getDocs(lettersRef);
+    letters = snapshot.docs
+      .map(doc => ({ id: doc.id, name: doc.data().name }))
+      .filter(letter => letter.name);
+    renderHomeCards();
+  }
+
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => {
+      page.classList.remove('active', 'fade-in');
+      page.style.display = 'none';
+      page.style.opacity = '0';
+    });
+    const target = document.getElementById(pageId);
+    if (!target) return;
+    target.style.display = 'block';
+    requestAnimationFrame(() => {
+      target.classList.add('active', 'fade-in');
+      target.style.opacity = '1';
+    });
+
+    if (pageId === 'page-home') renderHomeCards();
+  }
+
+  function renderHomeCards() {
+    const grid = document.getElementById('cards-grid');
+    const empty = document.getElementById('empty-state');
+    grid.innerHTML = '';
+    if (letters.length === 0) {
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+    const rotations = ['-1deg','1.5deg','-0.5deg','2deg','-1.5deg','0.5deg'];
+    const colors = ['#dbf2cc','#f8c4cf','#fbdbb0','#dbf2cc','#f8c4cf'];
+
+    letters.forEach((letter, i) => {
+      const rot = rotations[i % rotations.length];
+      const initials = letter.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+      const bg = colors[i % colors.length];
+      const card = document.createElement('div');
+      card.className = 'letter-card';
+      card.style.cssText = `background:#fff;border-radius:1.25rem;padding:1.75rem;box-shadow:0 8px 24px rgba(46,47,45,0.07);position:relative;overflow:hidden;transform:rotate(${rot});`;
+      card.innerHTML = `
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 washi" style="background:${bg}cc"></div>
+        <div style="width:56px;height:56px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
+          <span class="font-headline italic text-xl" style="color:#4d6144">${initials}</span>
+        </div>
+        <h3 class="font-headline italic text-2xl mb-1" style="color:#2e2f2d">${letter.name}</h3>
+        <p class="font-body text-xs mb-4" style="color:#aeadaa">A private letter awaits</p>
+        <div class="flex items-center gap-1.5 text-xs font-body font-bold" style="color:#4d6144">
+          <span class="material-symbols-outlined filled text-sm">lock</span>
+          Open Letter
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </div>
+      `;
+      card.addEventListener('click', () => goToPasswordPage(letter.id));
+      grid.appendChild(card);
+    });
+  }
+
+  function goToPasswordPage(letterId) {
+    currentLetterId = letterId;
+    const letter = letters.find(l => l.id === letterId);
+    if (!letter) return;
+    document.getElementById('pw-recipient-hint').textContent = `Enter the password for ${letter.name}`;
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-error').classList.add('hidden');
+    document.getElementById('pw-underline').style.transform = 'scaleX(0)';
+    showPage('page-password');
+    setTimeout(() => document.getElementById('pw-input').focus(), 600);
+  }
+
+  document.getElementById('pw-input')?.addEventListener('focus', () => {
+    document.getElementById('pw-underline').style.transform = 'scaleX(1)';
+  });
+
+  document.getElementById('pw-input')?.addEventListener('blur', () => {
+    if (!document.getElementById('pw-input').value) {
+      document.getElementById('pw-underline').style.transform = 'scaleX(0)';
+    }
+  });
+
+  async function attemptUnlock() {
+    const input = document.getElementById('pw-input').value.trim();
+    if (!input) return;
+    const letterStub = letters.find(l => l.id === currentLetterId);
+    if (!letterStub) return;
+
+    const letterDoc = await getDoc(doc(db, 'letters', currentLetterId));
+    if (!letterDoc.exists()) {
+      showPasswordError();
+      return;
+    }
+    const data = letterDoc.data();
+    const decrypted = await decryptData(data.encrypted, input);
+    if (!decrypted) {
+      showPasswordError();
+      return;
+    }
+
+    currentLetter = {
+      id: currentLetterId,
+      name: data.name,
+      password: input,
+      content: decrypted.content,
+      images: decrypted.images || [],
+      music: decrypted.music || ''
+    };
+
+    spawnHearts();
+    setTimeout(() => openLetterPage(currentLetter), 700);
+  }
+
+  function showPasswordError() {
+    const errEl = document.getElementById('pw-error');
+    errEl.classList.remove('hidden');
+    const inputEl = document.getElementById('pw-input');
+    inputEl.classList.add('shake');
+    setTimeout(() => inputEl.classList.remove('shake'), 600);
+    inputEl.value = '';
+  }
+
+  function openLetterPage(letter) {
+    showPage('page-letter');
+    document.getElementById('letter-loading').style.display = 'flex';
+    document.getElementById('letter-envelope').style.display = 'none';
+    document.getElementById('letter-content').style.display = 'none';
+    document.getElementById('letter-envelope').classList.add('hidden');
+    document.getElementById('letter-content').classList.add('hidden');
+    if (typewriterInterval) { clearInterval(typewriterInterval); typewriterInterval = null; }
+
+    const audio = document.getElementById('bg-music');
+    audio.pause();
+    audio.src = letter.music || '';
+    document.getElementById('music-icon').textContent = 'play_arrow';
+    document.getElementById('music-status').textContent = 'Paused';
+    const trackName = letter.music ? (letter.music.split('/').pop().replace(/\.[^.]+$/, '') || 'Your Song') : 'Your Song';
+    document.getElementById('music-title').textContent = trackName.length > 24 ? trackName.slice(0,24) + '…' : trackName;
+
+    setTimeout(() => {
+      document.getElementById('letter-loading').style.display = 'none';
+      document.getElementById('letter-envelope').classList.remove('hidden');
+      document.getElementById('letter-envelope').style.display = 'flex';
+      document.getElementById('envelope-for-name').textContent = `For ${letter.name} 💗`;
+      document.getElementById('envelope').classList.remove('open');
+      document.getElementById('wax-seal').style.opacity = '1';
+      document.getElementById('wax-seal').style.transform = 'translateX(-50%) scale(1)';
+    }, 2200);
+  }
+
+  function openEnvelope() {
+    const env = document.getElementById('envelope');
+    if (env.classList.contains('open')) return;
+    env.classList.add('open');
+    document.getElementById('wax-seal').style.opacity = '0';
+    document.getElementById('wax-seal').style.transform = 'translateX(-50%) scale(0)';
+    setTimeout(() => {
+      document.getElementById('letter-envelope').style.display = 'none';
+      document.getElementById('letter-envelope').classList.add('hidden');
+      showLetterContent();
+      const audio = document.getElementById('bg-music');
+      if (audio.src && audio.src !== window.location.href) {
+        audio.volume = 0.6;
+        audio.play().then(() => {
+          document.getElementById('music-icon').textContent = 'pause';
+          document.getElementById('music-status').textContent = 'Playing';
+        }).catch(() => {});
+      }
+    }, 900);
+  }
+
+  function showLetterContent() {
+    if (!currentLetter) return;
+    document.getElementById('letter-content').classList.remove('hidden');
+    document.getElementById('letter-content').style.display = 'block';
+    document.getElementById('letter-title').textContent = `For ${currentLetter.name} 💗`;
+
+    const textEl = document.getElementById('letter-text');
+    textEl.innerHTML = '';
+    const cursor = document.getElementById('type-cursor');
+    cursor.style.display = 'inline-block';
+    let i = 0;
+    const content = currentLetter.content || '';
+    const chars = [...content];
+    typewriterInterval = setInterval(() => {
+      if (i >= chars.length) {
+        clearInterval(typewriterInterval);
+        cursor.style.display = 'none';
+        return;
+      }
+      const ch = chars[i];
+      if (ch === '\n') {
+        textEl.innerHTML += '<br/>';
+      } else {
+        const span = document.createElement('span');
+        span.textContent = ch;
+        textEl.appendChild(span);
+      }
+      i++;
+      textEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 22);
+
+    renderPolaroids(currentLetter.images || []);
+  }
+
+  function renderPolaroids(images) {
+    const gallery = document.getElementById('polaroid-gallery');
+    const extra = document.getElementById('image-grid-extra');
+    gallery.innerHTML = '';
+    extra.innerHTML = '';
+    if (!images || images.length === 0) return;
+    const captions = ['A cherished moment','Together always','Golden memories','Bloom anyway','Forever in my heart','Our little story'];
+    const rotations = ['rotate-3','-rotate-6','rotate-2','-rotate-3','rotate-5','-rotate-2'];
+    const sidebar = images.slice(0, 3);
+    const rest = images.slice(3);
+
+    sidebar.forEach((url, i) => {
+      const div = document.createElement('div');
+      div.style.cssText = `position:relative;animation:slideUp 0.7s cubic-bezier(0.4,0,0.2,1) ${0.3 + i*0.2}s both`;
+      div.innerHTML = `
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:60px;height:20px" class="washi"></div>
+        <div class="polaroid ${rotations[i % rotations.length]}" style="max-width:180px;margin:0 auto">
+          <div style="aspect-ratio:1;overflow:hidden;background:#e9e8e4">
+            <img src="${url}" alt="Memory ${i+1}" style="width:100%;height:100%;object-fit:cover" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e9e8e4%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2212%22 fill=%22%23aeadaa%22>📷</text></svg>'"/>
+          </div>
+          <p style="text-align:center;font-family:'Newsreader',serif;font-style:italic;font-size:0.8rem;margin-top:8px;color:#5b5c59">${captions[i] || 'Memory'}</p>
+        </div>
+      `;
+      gallery.appendChild(div);
+    });
+
+    rest.forEach((url, i) => {
+      const div = document.createElement('div');
+      div.className = 'polaroid';
+      div.style.cssText = `animation:slideUp 0.7s cubic-bezier(0.4,0,0.2,1) ${0.6 + i*0.15}s both;`;
+      div.innerHTML = `
+        <div style="aspect-ratio:1;overflow:hidden;background:#e9e8e4">
+          <img src="${url}" alt="Memory" style="width:100%;height:100%;object-fit:cover" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e9e8e4%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2212%22 fill=%22%23aeadaa%22>📷</text></svg>'"/>
+        </div>
+        <p style="text-align:center;font-family:'Newsreader',serif;font-style:italic;font-size:0.75rem;margin-top:6px;color:#5b5c59">${captions[(i+3) % captions.length]}</p>
+      `;
+      extra.appendChild(div);
+    });
+  }
+
+  function replayLetter() {
+    if (!currentLetter) return;
+    if (typewriterInterval) { clearInterval(typewriterInterval); typewriterInterval = null; }
+    openLetterPage(currentLetter);
+  }
+
+  function toggleMusic() {
+    const audio = document.getElementById('bg-music');
+    if (!audio.src || audio.src === window.location.href) return;
+    if (audio.paused) {
+      audio.play().then(() => {
+        document.getElementById('music-icon').textContent = 'pause';
+        document.getElementById('music-status').textContent = 'Playing';
+      }).catch(() => {});
+    } else {
+      audio.pause();
+      document.getElementById('music-icon').textContent = 'play_arrow';
+      document.getElementById('music-status').textContent = 'Paused';
+    }
+  }
+
+  function setVolume(v) {
+    document.getElementById('bg-music').volume = Number(v);
+  }
+
+  async function decryptData(encryptedData, password) {
+    try {
+      const key = await deriveKey(password);
+      const encrypted = base64ToArrayBuffer(encryptedData.encrypted);
+      const iv = base64ToArrayBuffer(encryptedData.iv);
+      const decrypted = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv },
+        key,
+        encrypted
+      );
+      const decoder = new TextDecoder();
+      return JSON.parse(decoder.decode(decrypted));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function deriveKey(password) {
+    const encoder = new TextEncoder();
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw',
+      encoder.encode(password),
+      'PBKDF2',
+      false,
+      ['deriveBits', 'deriveKey']
+    );
+    return crypto.subtle.deriveKey(
+      {
+        name: 'PBKDF2',
+        salt: encoder.encode('palanca-salt'),
+        iterations: 100000,
+        hash: 'SHA-256'
+      },
+      keyMaterial,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['encrypt', 'decrypt']
+    );
+  }
+
+  function base64ToArrayBuffer(base64) {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
+  (async () => {
+    await signInAnonymous();
+    await loadLetterIndex();
+  })();
+</script>
+</body>
+</html>

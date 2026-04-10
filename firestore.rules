@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /letters/{letterId} {
+      // Viewer access: any authenticated user can read encrypted letter documents.
+      allow read: if request.auth != null;
+      // Write access: only the configured admin account may create, update, or delete letters.
+      allow create, update, delete: if request.auth.token.email == 'davethetalented@gmail.com';
+    }
+  }
+}

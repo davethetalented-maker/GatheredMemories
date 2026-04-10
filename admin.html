@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin — Gathered Memories</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Plus+Jakarta+Sans:wght@200..800&family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: "#4d6144",
+        "primary-container": "#dbf2cc",
+        "on-primary": "#e2fad3",
+        "on-primary-container": "#485c3f",
+        secondary: "#78505a",
+        "secondary-container": "#f8c4cf",
+        "on-secondary-container": "#623d46",
+        tertiary: "#6f5836",
+        "tertiary-container": "#fbdbb0",
+        "on-tertiary-container": "#624c2c",
+        surface: "#f8f6f2",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#f2f1ec",
+        "surface-container": "#e9e8e4",
+        "surface-container-high": "#e4e2de",
+        "surface-container-highest": "#deddd8",
+        "on-surface": "#2e2f2d",
+        "on-surface-variant": "#5b5c59",
+        "outline-variant": "#aeadaa",
+        outline: "#777774",
+        background: "#f8f6f2",
+        "on-background": "#2e2f2d",
+        error: "#b02500",
+        "error-container": "#f95630",
+      },
+      fontFamily: {
+        headline: ["Newsreader", "serif"],
+        body: ["Plus Jakarta Sans", "sans-serif"],
+        script: ["Dancing Script", "cursive"],
+      },
+    }
+  }
+}
+</script>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8f6f2; color: #2e2f2d; min-height: 100dvh; overflow-x: hidden; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+  .filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .glass-player { background: rgba(248,246,242,0.85); backdrop-filter: blur(20px); }
+  .admin-input { width: 100%; background: transparent; border: none; border-bottom: 2px solid rgba(174,173,170,0.35); padding: 10px 4px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; color: #2e2f2d; outline: none; transition: border-color 0.4s; }
+  .admin-input:focus { border-bottom-color: #4d6144; }
+  .admin-textarea { width: 100%; background: rgba(242,241,236,0.5); border: none; border-radius: 12px; padding: 14px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; color: #2e2f2d; outline: none; resize: vertical; transition: background 0.3s; min-height: 140px; }
+  .admin-textarea:focus { background: rgba(219,242,204,0.3); }
+  .washi { display: inline-block; padding: 2px 16px; background: rgba(248,196,207,0.55); backdrop-filter: blur(4px); clip-path: polygon(3% 0%,97% 0%,100% 50%,97% 100%,3% 100%,0% 50%); }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div id="admin-login" class="min-h-dvh flex items-center justify-center px-6">
+  <div class="w-full max-w-sm" style="background:rgba(255,255,255,0.5);backdrop-filter:blur(20px);border-radius:2rem;padding:2.5rem;border:1px solid rgba(255,255,255,0.5);box-shadow:0 20px 50px rgba(77,97,68,0.1)">
+    <div class="text-center mb-8">
+      <span class="material-symbols-outlined filled text-5xl mb-3 block" style="color:#4d6144">admin_panel_settings</span>
+      <h1 class="font-headline italic text-2xl mb-1" style="color:#2e2f2d">Admin Login</h1>
+      <p class="font-body text-sm" style="color:#5b5c59">Sign in with your Firebase admin credentials.</p>
+    </div>
+    <div class="space-y-5">
+      <div>
+        <label class="text-xs uppercase tracking-widest font-body mb-2 block" style="color:#5b5c59">Email</label>
+        <input id="admin-email" type="email" placeholder="admin@domain.com" class="admin-input" />
+      </div>
+      <div>
+        <label class="text-xs uppercase tracking-widest font-body mb-2 block" style="color:#5b5c59">Password</label>
+        <input id="admin-password" type="password" placeholder="Your Firebase password" class="admin-input" />
+      </div>
+      <div id="admin-login-error" class="hidden text-center text-xs" style="color:#b02500">Unable to sign in. Check your credentials.</div>
+      <button onclick="signInAdmin()" class="w-full py-3.5 rounded-xl font-body font-bold text-sm" style="background:#4d6144;color:#e2fad3">Sign In</button>
+      <p class="text-center text-xs" style="color:#aeadaa">No hardcoded passwords in client-side code.</p>
+    </div>
+  </div>
+</div>
+<div id="admin-dashboard" class="hidden">
+  <header class="sticky top-0 z-50 glass-player px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined filled" style="color:#4d6144">local_florist</span>
+      <h1 class="font-headline italic text-xl" style="color:#4d6144">Admin — Gathered Memories</h1>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="flex items-center gap-1.5 text-xs font-body px-3 py-1.5 rounded-full" style="color:#5b5c59;background:rgba(174,173,170,0.15)">
+        <span class="material-symbols-outlined text-sm">home</span> Viewer
+      </a>
+      <button onclick="signOutAdmin()" class="flex items-center gap-1.5 text-xs font-body px-3 py-1.5 rounded-full" style="color:#b02500;background:rgba(249,86,48,0.1)">
+        <span class="material-symbols-outlined text-sm">logout</span> Sign Out
+      </button>
+    </div>
+  </header>
+  <main class="max-w-4xl mx-auto px-6 py-10">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="font-headline italic text-3xl" style="color:#2e2f2d">Letters</h2>
+      <button onclick="openLetterForm(null)" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-body font-bold text-sm" style="background:#4d6144;color:#e2fad3;box-shadow:0 6px 18px rgba(77,97,68,0.2)">
+        <span class="material-symbols-outlined text-sm">add</span> New Letter
+      </button>
+    </div>
+    <div id="admin-letters-list" class="space-y-4"></div>
+    <div id="admin-empty" class="hidden text-center py-16">
+      <span class="material-symbols-outlined text-5xl block mb-3" style="color:#aeadaa">mail_outline</span>
+      <p class="font-headline italic text-xl" style="color:#777774">No letters yet. Create your first one!</p>
+    </div>
+  </main>
+</div>
+<div id="letter-form-modal" class="hidden fixed inset-0 z-50 flex items-start justify-center p-6 pt-10 overflow-y-auto" style="background:rgba(46,47,45,0.35);backdrop-filter:blur(6px)">
+  <div class="w-full max-w-2xl rounded-3xl p-8 mb-10" style="background:#f8f6f2;box-shadow:0 30px 80px rgba(46,47,45,0.2)">
+    <div class="flex items-center justify-between mb-8">
+      <h3 id="form-title" class="font-headline italic text-2xl" style="color:#2e2f2d">New Letter</h3>
+      <button onclick="closeLetterForm()" class="w-9 h-9 rounded-full flex items-center justify-center hover:opacity-70" style="background:#e9e8e4">
+        <span class="material-symbols-outlined text-sm">close</span>
+      </button>
+    </div>
+    <div class="space-y-7">
+      <div>
+        <label class="text-xs uppercase tracking-widest font-body mb-2 block" style="color:#5b5c59">Recipient Name *</label>
+        <input id="f-name" type="text" placeholder="e.g. Kim, Block A, Debate Team" class="admin-input"/>
+      </div>
+      <div>
+        <label class="text-xs uppercase tracking-widest font-body mb-2 block" style="color:#5b5c59">Password *</label>
+        <input id="f-password" type="text" placeholder="Unique password for this recipient" class="admin-input"/>
+      </div>
+      <div>
+        <label class="text-xs uppercase tracking-widest font-body mb-2 block" style="color:#5b5c59">Letter Content *</label>
+        <textarea id="f-content" class="admin-textarea" rows="8" placeholder="Write your heartfelt palanca letter here..."></textarea>
+      </div>
+      <div>
+        <label class="text-xs uppercase tracking-widest font-body mb-2 block" style="color:#5b5c59">Images (Paste URLs, one per line)</label>
+        <textarea id="f-images" class="admin-textarea" rows="3" placeholder="https://example.com/photo1.jpg&#10;https://example.com/photo2.jpg"></textarea>
+        <p class="text-xs mt-1" style="color:#aeadaa">Or upload images below:</p>
+        <input id="f-image-upload" type="file" accept="image/*" multiple class="mt-2 text-xs file:mr-3 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-medium" style="color:#5b5c59;--tw-file-mr:12px"/>
+        <div id="f-image-previews" class="grid grid-cols-3 gap-2 mt-3"></div>
+      </div>
+      <div>
+        <label class="text-xs uppercase tracking-widest font-body mb-2 block" style="color:#5b5c59">Music URL</label>
+        <input id="f-music" type="text" placeholder="https://example.com/song.mp3" class="admin-input"/>
+        <p class="text-xs mt-1" style="color:#aeadaa">Or upload:</p>
+        <input id="f-music-upload" type="file" accept="audio/*" class="mt-1 text-xs file:mr-3 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-medium" style="color:#5b5c59"/>
+      </div>
+      <div id="form-error" class="hidden text-sm font-body p-3 rounded-xl" style="background:rgba(249,86,48,0.1);color:#b02500"></div>
+      <div class="flex gap-3 pt-2">
+        <button onclick="closeLetterForm()" class="flex-1 py-3 rounded-xl font-body font-bold text-sm" style="background:#e9e8e4;color:#5b5c59">Cancel</button>
+        <button onclick="saveLetter()" class="flex-1 py-3 rounded-xl font-body font-bold text-sm" style="background:#4d6144;color:#e2fad3;box-shadow:0 6px 18px rgba(77,97,68,0.2)">Save Letter</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+  import { getFirestore, collection, doc, getDoc, getDocs, setDoc, deleteDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqX76CnWtppsLalmsBTUDOZtzkFCROwJw",
+    authDomain: "palanca-letters-ccb0d.firebaseapp.com",
+    projectId: "palanca-letters-ccb0d",
+    storageBucket: "palanca-letters-ccb0d.firebasestorage.app",
+    messagingSenderId: "568004585918",
+    appId: "1:568004585918:web:20c25889a9d65057dcb1ef",
+    measurementId: "G-RTTQ2YNLTN"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  let letters = [];
+  let editingLetterId = null;
+  let uploadedImages = [];
+  let uploadedMusic = null;
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      showAdminDashboard();
+      loadAdminLetters();
+    } else {
+      showAdminLogin();
+    }
+  });
+
+  function showAdminLogin() {
+    document.getElementById('admin-login').classList.remove('hidden');
+    document.getElementById('admin-dashboard').classList.add('hidden');
+  }
+
+  function showAdminDashboard() {
+    document.getElementById('admin-login').classList.add('hidden');
+    document.getElementById('admin-dashboard').classList.remove('hidden');
+  }
+
+  async function signInAdmin() {
+    const email = document.getElementById('admin-email').value.trim();
+    const password = document.getElementById('admin-password').value;
+    const errorEl = document.getElementById('admin-login-error');
+    errorEl.classList.add('hidden');
+    if (!email || !password) {
+      errorEl.textContent = 'Enter your email and password.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      document.getElementById('admin-email').value = '';
+      document.getElementById('admin-password').value = '';
+    } catch (e) {
+      errorEl.textContent = 'Unable to sign in. Check your credentials.';
+      errorEl.classList.remove('hidden');
+    }
+  }
+
+  async function signOutAdmin() {
+    await signOut(auth);
+  }
+
+  async function loadAdminLetters() {
+    const lettersRef = collection(db, 'letters');
+    const snapshot = await getDocs(lettersRef);
+    letters = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).filter(letter => letter.name);
+    renderAdminList();
+  }
+
+  function renderAdminList() {
+    const list = document.getElementById('admin-letters-list');
+    const empty = document.getElementById('admin-empty');
+    list.innerHTML = '';
+    if (letters.length === 0) {
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+
+    letters.forEach(letter => {
+      const item = document.createElement('div');
+      item.style.cssText = 'background:#fff;border-radius:1rem;padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;box-shadow:0 4px 12px rgba(46,47,45,0.05);';
+      item.innerHTML = `
+        <div style="flex:1;min-width:0">
+          <p class="font-headline italic text-xl" style="color:#2e2f2d">${letter.name}</p>
+          <p class="font-body text-xs truncate mt-0.5" style="color:#aeadaa">Encrypted letter stored on Firestore.</p>
+        </div>
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <button onclick="openLetterForm('${letter.id}')" class="w-9 h-9 rounded-full flex items-center justify-center hover:opacity-75 transition-opacity" style="background:#e9e8e4">
+            <span class="material-symbols-outlined text-sm" style="color:#5b5c59">edit</span>
+          </button>
+          <button onclick="deleteLetter('${letter.id}')" class="w-9 h-9 rounded-full flex items-center justify-center hover:opacity-75 transition-opacity" style="background:rgba(249,86,48,0.1)">
+            <span class="material-symbols-outlined text-sm" style="color:#b02500">delete</span>
+          </button>
+        </div>
+      `;
+      list.appendChild(item);
+    });
+  }
+
+  async function openLetterForm(letterId) {
+    editingLetterId = letterId;
+    uploadedImages = [];
+    uploadedMusic = null;
+    document.getElementById('f-image-previews').innerHTML = '';
+    document.getElementById('form-error').classList.add('hidden');
+
+    if (letterId) {
+      const password = prompt('Enter the letter password to decrypt and edit this message:');
+      if (!password) return;
+      const letterDoc = await getDoc(doc(db, 'letters', letterId));
+      if (!letterDoc.exists()) {
+        alert('Letter not found.');
+        return;
+      }
+      const data = letterDoc.data();
+      const decrypted = await decryptData(data.encrypted, password);
+      if (!decrypted) {
+        alert('Incorrect password. Cannot edit this letter.');
+        return;
+      }
+      document.getElementById('form-title').textContent = `Edit — ${data.name}`;
+      document.getElementById('f-name').value = data.name;
+      document.getElementById('f-password').value = password;
+      document.getElementById('f-content').value = decrypted.content;
+      document.getElementById('f-images').value = (decrypted.images || []).filter(img => !img.startsWith('data:')).join('\n');
+      document.getElementById('f-music').value = decrypted.music && !decrypted.music.startsWith('data:') ? decrypted.music : '';
+      (decrypted.images || []).filter(img => img.startsWith('data:')).forEach(src => addImagePreview(src));
+      uploadedImages = (decrypted.images || []).filter(img => img.startsWith('data:'));
+      if (decrypted.music && decrypted.music.startsWith('data:')) uploadedMusic = decrypted.music;
+    } else {
+      document.getElementById('form-title').textContent = 'New Letter';
+      document.getElementById('f-name').value = '';
+      document.getElementById('f-password').value = '';
+      document.getElementById('f-content').value = '';
+      document.getElementById('f-images').value = '';
+      document.getElementById('f-music').value = '';
+    }
+    document.getElementById('letter-form-modal').classList.remove('hidden');
+  }
+
+  function closeLetterForm() {
+    document.getElementById('letter-form-modal').classList.add('hidden');
+    editingLetterId = null;
+    uploadedImages = [];
+    uploadedMusic = null;
+  }
+
+  document.getElementById('f-image-upload')?.addEventListener('change', function() {
+    const files = Array.from(this.files);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const src = e.target.result;
+        uploadedImages.push(src);
+        addImagePreview(src);
+      };
+      reader.readAsDataURL(file);
+    });
+    this.value = '';
+  });
+
+  function addImagePreview(src) {
+    const div = document.createElement('div');
+    div.style.cssText = 'position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:#e9e8e4';
+    div.innerHTML = `
+      <img src="${src}" style="width:100%;height:100%;object-fit:cover"/>
+      <button onclick="removeUploadedImage(this)" data-src="${src}" style="position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(176,37,0,0.8);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px">×</button>
+    `;
+    document.getElementById('f-image-previews').appendChild(div);
+  }
+
+  function removeUploadedImage(btn) {
+    const src = btn.dataset.src;
+    uploadedImages = uploadedImages.filter(s => s !== src);
+    btn.closest('div').remove();
+  }
+
+  document.getElementById('f-music-upload')?.addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      uploadedMusic = e.target.result;
+      document.getElementById('f-music').value = `[Uploaded: ${file.name}]`;
+      document.getElementById('f-music').dataset.isUpload = 'true';
+    };
+    reader.readAsDataURL(file);
+    this.value = '';
+  });
+
+  async function saveLetter() {
+    const name = document.getElementById('f-name').value.trim();
+    const password = document.getElementById('f-password').value.trim();
+    const content = document.getElementById('f-content').value.trim();
+    const imagesRaw = document.getElementById('f-images').value.trim();
+    const musicUrl = document.getElementById('f-music').value.trim();
+    const err = document.getElementById('form-error');
+    if (!name || !password || !content) {
+      err.textContent = 'Name, password, and content are required.';
+      err.classList.remove('hidden');
+      return;
+    }
+
+    const urlImages = imagesRaw ? imagesRaw.split('\n').map(u => u.trim()).filter(u => u && u.startsWith('http')) : [];
+    const allImages = [...urlImages, ...uploadedImages];
+    let musicFinal = '';
+    if (uploadedMusic) {
+      musicFinal = uploadedMusic;
+    } else if (musicUrl && !musicUrl.startsWith('[Uploaded')) {
+      musicFinal = musicUrl;
+    }
+
+    const encryptedData = await encryptData({ content, images: allImages, music: musicFinal }, password);
+    const letterId = editingLetterId || `letter_${Date.now()}_${Math.random().toString(36).slice(2,6)}`;
+    await setDoc(doc(db, 'letters', letterId), {
+      name,
+      encrypted: encryptedData,
+      updatedAt: serverTimestamp()
+    });
+
+    closeLetterForm();
+    await loadAdminLetters();
+  }
+
+  async function deleteLetter(letterId) {
+    if (!confirm('Delete this letter? This cannot be undone.')) return;
+    await deleteDoc(doc(db, 'letters', letterId));
+    await loadAdminLetters();
+  }
+
+  async function encryptData(data, password) {
+    const encoder = new TextEncoder();
+    const dataBuffer = encoder.encode(JSON.stringify(data));
+    const key = await deriveKey(password);
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const encrypted = await crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv },
+      key,
+      dataBuffer
+    );
+    return { encrypted: arrayBufferToBase64(encrypted), iv: arrayBufferToBase64(iv) };
+  }
+
+  async function decryptData(encryptedData, password) {
+    try {
+      const key = await deriveKey(password);
+      const encrypted = base64ToArrayBuffer(encryptedData.encrypted);
+      const iv = base64ToArrayBuffer(encryptedData.iv);
+      const decrypted = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv },
+        key,
+        encrypted
+      );
+      const decoder = new TextDecoder();
+      return JSON.parse(decoder.decode(decrypted));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function deriveKey(password) {
+    const encoder = new TextEncoder();
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw',
+      encoder.encode(password),
+      'PBKDF2',
+      false,
+      ['deriveBits', 'deriveKey']
+    );
+    return crypto.subtle.deriveKey(
+      {
+        name: 'PBKDF2',
+        salt: encoder.encode('palanca-salt'),
+        iterations: 100000,
+        hash: 'SHA-256'
+      },
+      keyMaterial,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['encrypt', 'decrypt']
+    );
+  }
+
+  function arrayBufferToBase64(buffer) {
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
+
+  function base64ToArrayBuffer(base64) {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+</script>
+</body>
+</html>
